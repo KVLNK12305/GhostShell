@@ -1,18 +1,25 @@
 # --- Rust Core ---
 /target/
 **/*.rs.bk
-Cargo.lock
-# Uncomment Cargo.lock if this is a library, keep it if it's an application
+# Cargo.lock can be included for applications; ignored for libraries
+# Cargo.lock
 
 # --- Node.js Core ---
 node_modules/
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
 pnpm-debug.log*
+yarn-error.log*
+.pnpm/
+.pnp.*
+.pnp.cjs
+.pnp.data.json
 
-# --- Build Outputs (Frontend) ---
+# --- Build Outputs ---
 /dist/
 /build/
+/out/
+/.next/
 
 # --- Environment Variables ---
 .env
@@ -20,6 +27,7 @@ pnpm-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+!.env.example
 
 # --- Editors & IDEs ---
 .idea/
@@ -30,3 +38,24 @@ pnpm-debug.log*
 # --- OS Specific ---
 .DS_Store
 Thumbs.db
+
+# --- Testing ---
+/coverage/
+
+# --- Monorepo / pnpm workspace ---
+.pnpm-workspace-state-v1.json
+/modules.yaml
+
+# --- Docker ---
+Dockerfile
+*.pem
+
+# --- Vercel ---
+.vercel
+
+# --- TypeScript ---
+*.tsbuildinfo
+next-env.d.ts
+
+# --- Misc ---
+flag.txt
