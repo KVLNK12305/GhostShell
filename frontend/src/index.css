@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* --- Global Hacker Theme Overrides --- */
+
+:root {
+  background-color: #000000; /* Pitch Black */
+  color: #00ff00; /* Terminal Green */
+  font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b43030; 
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+/* --- Text Selection --- */
+::selection {
+  background: #00ff00;
+  color: #000000;
+}
