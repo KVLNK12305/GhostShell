@@ -3,7 +3,7 @@ import TerminalTab from './components/TerminalTab';
 import Sidebar from './components/Sidebar';
 import Trap from './components/Trap';
 import GrimoireBot from './components/GrimoireBot'; 
-import StegoEncoder from './components/StegoEncoder'; // <--- 1. Import the Tool
+import StegoEncoder from './components/StegoEncode'; // <--- 1. Import the Tool
 import { Plus, X, Monitor, Skull, Eye } from 'lucide-react'; // Added 'Eye' icon
 
 function App() {
