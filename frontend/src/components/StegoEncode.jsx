@@ -36,7 +36,7 @@ const StegoEncoder = () => {
       {/* Header */}
       <div className="flex items-center gap-2 mb-6 border-b border-purple-500/20 pb-4">
         <Lock className="text-purple-400" size={20} />
-        <h2 className="text-xl font-bold text-purple-100 tracking-wider">STEGOSIM <span className="text-purple-500 text-sm">// ENCODER PROTOCOL</span></h2>
+        <h2 className="text-xl font-bold text-purple-100 tracking-wider">GhostShell<span className="text-purple-500 text-sm">// ENCODER PROTOCOL</span></h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full overflow-y-auto">

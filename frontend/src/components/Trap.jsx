@@ -14,13 +14,6 @@ export default function Trap({ active, onReset }) {
         IP ADDRESS LOGGED.<br/>
         SYSTEM LOCKDOWN INITIATED.
       </p>
-      
-      <button 
-        onClick={onReset}
-        className="px-8 py-3 border border-red-600 hover:bg-red-600 hover:text-black transition-colors uppercase tracking-widest cursor-pointer"
-      >
-        Disengage Protocol
-      </button>
     </div>
   );
 }

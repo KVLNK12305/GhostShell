@@ -2,17 +2,14 @@ import { ShieldAlert, Terminal, Lock, Database } from 'lucide-react';
 
 export default function Sidebar() {
   const missions = [
-    { id: 1, title: "0x01: Basic Shell", icon: <Terminal size={18} />, status: "active" },
-    { id: 2, title: "0x02: Stego Hunt", icon: <Database size={18} />, status: "locked" },
-    { id: 3, title: "0x03: Bank Heist", icon: <Lock size={18} />, status: "locked" },
-    { id: 4, title: "0x04: Admin Access", icon: <ShieldAlert size={18} />, status: "locked" },
+    { id: 1, title: "0x01: Basic Shell", icon: <Terminal size={18} />, status: "active" }
   ];
 
   return (
     <div className="w-64 bg-zinc-950 border-r border-zinc-800 flex flex-col h-full font-mono hidden md:flex">
       {/* Header */}
       <div className="p-4 border-b border-zinc-800">
-        <h1 className="text-green-500 font-bold text-xl tracking-wider">STEGOSIM<span className="animate-pulse">_</span></h1>
+        <h1 className="text-green-500 font-bold text-xl tracking-wider">GhostShell<span className="animate-pulse">_</span></h1>
         <p className="text-xs text-zinc-500 mt-1">v1.0.4 [UNCLASSIFIED]</p>
       </div>
 
