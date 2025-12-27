@@ -1,90 +1,181 @@
-# StegoSim: The Steganography Simulator & Honeypot 🕵️‍♂️🍯
+Here it is **clean, ready-to-drop, pure Markdown**.
+No prose outside the file — just copy this into `README.md`.
 
-**StegoSim** is a dual-purpose security platform. It serves as an interactive, web-based sandbox for learning steganalysis, while simultaneously acting as a high-interaction honeypot to detect and log malicious command execution attempts.
+---
+
+````md
+# 🧪 GhostShell  
+### A Deceptive Command Execution Environment
+
+GhostShell is an interactive command-line platform designed to observe, classify, and respond to user behavior inside a synthetic execution environment.
+
+It presents itself as a harmless learning sandbox — but beneath the surface, it functions as a high-interaction deception engine that studies misuse, escalation attempts, and adversarial intent in real time.
+
+---
+
+## 🧠 Core Idea
+
+> What if a terminal didn’t tell the truth — but stayed believable?
+
+GhostShell allows users to execute real commands inside disposable environments while the system:
+- Intercepts every command
+- Classifies intent (benign, exploratory, malicious)
+- Selectively alters reality
+- Feeds consistent but fabricated system responses
+- Logs behavior for later analysis
+
+The interaction itself becomes the signal.
+
+---
+
+## 🎭 Dual Reality Model
+
+### 👤 What the Participant Sees
+- A real web-based terminal
+- Familiar Linux tooling
+- File systems that appear consistent
+- Tasks framed as technical exercises
+
+### 🍯 What the System Is Doing
+- Monitoring behavioral patterns
+- Detecting enumeration and escalation
+- Simulating privileged resources
+- Maintaining long-term deception
+- Studying reactions when reality bends
 
 ---
 
 ## 🚀 Features
 
-### 🛡️ For Students (The Simulator)
-- **Real Web Terminal:** A fully functional, browser-based terminal powered by `Xterm.js`.
-- **Pre-configured Sandbox:** Executes commands in disposable, isolated Docker containers.
-- **Real Tools:** Pre-installed industrial CTF tools:
-  - `zsteg` (LSB analysis for PNG/BMP)
-  - `binwalk` (File signature analysis & extraction)
-  - `exiftool` (Metadata analysis)
-  - `strings` (ASCII string extraction)
-- **Challenge Library:** Guided levels to teach core concepts (LSB, appended files, metadata).
+### 🖥️ Interactive Execution Layer
+- Browser-based terminal powered by Xterm.js
+- Commands executed inside ephemeral Docker-based reality instances
+- Output streamed live over WebSockets
 
-### 🍯 For Attackers (The Honeypot)
-- **Command Interception:** The backend "Warden" intercepts every command before it hits the sandbox.
-- **Malice Detection:** Automatically flags sessions that attempt RCE (e.g., `wget`, `curl`, `rm -rf`, `cat /etc/passwd`).
-- **High-Interaction Simulation:** Feeds attackers fake system data (e.g., a fake `/etc/passwd` file) to keep them engaged while logging their activity.
-- **Silent Ban:** Automatically terminates connections after repeated malicious attempts.
+### 🧠 Deception Engine
+- All commands intercepted before execution
+- Intent classification via pattern analysis
+- Adaptive response system:
+  - Real output for benign usage
+  - Simulated output for suspicious actions
+  - Fabricated system artifacts when probing occurs
+
+### 🍯 High-Interaction Behavior Capture
+- Fake but believable system targets (users, files, configs)
+- Persistent illusion per session
+- Escalation attempts logged silently
+- Automatic reality collapse after repeated malicious probing
+
+### 🧪 Narrative-Based Entry Points
+- Tasks presented as technical challenges
+- Narratives exist to invite interaction, not define the platform
+- The system measures how users explore, not what they solve
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tooling Inside the Environment
 
-- **Frontend:** React.js, Tailwind CSS, Xterm.js
-- **Backend (The Warden):** Node.js, Express, Socket.io
-- **Execution Engine:** Docker
-- **Database:** PostgreSQL (for logging session activity)
+The execution environment includes real, industry-standard utilities to ensure realism:
+
+- binwalk — binary structure inspection
+- exiftool — metadata analysis
+- strings — ASCII extraction
+- zsteg — bit-level image analysis
+
+These tools are means, not the focus.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture Overview
 
-[ Insert a simple architecture diagram here if you have one, otherwise delete this line ]
+1. A participant enters a command via the web terminal
+2. The backend Deception Engine receives it via WebSocket
+3. The command is analyzed for intent
+4. One of three paths occurs:
+   - Direct execution inside a disposable container
+   - Simulated execution with fabricated output
+   - Deceptive engagement using fake system artifacts
+5. Output is returned to the participant
+6. Session behavior is logged for analysis
 
-1.  **User** types a command in the React terminal.
-2.  **Backend (Warden)** receives the command via WebSocket.
-3.  **Warden** checks if the command is safe:
-    - **If Safe:** Spawns a temporary Docker container, runs the command, captures output, destroys container, returns output to user.
-    - **If Malicious:** Logs the incident, returns fake simulated output, and flags the session.
+At no point is the participant informed which reality they are interacting with.
+
+---
+
+## 🧬 Design Philosophy
+
+- Believability over restriction
+- Observation over prevention
+- Deception over denial
+- Behavior over outcomes
+
+GhostShell is not designed to block attackers — it is designed to understand them.
 
 ---
 
 ## 🏁 Getting Started (Local Development)
 
 ### Prerequisites
-- Node.js (v18+) & pnpm
-- Docker Desktop (must be running)
+- Node.js v18+
+- pnpm
+- Docker (must be running)
 
 ### Installation
 
-1.  **Clone the repo:**
-    ```bash
-    git clone [https://github.com/KVLNK12305/StegoSim.git](https://github.com/KVLNK12305/StegoSim.git)
-    cd StegoSim
-    ```
+```bash
+git clone https://github.com/KVLNK12305/StegoSim.git
+cd StegoSim
+````
 
-2.  **Build the Sandbox Image:**
-    ```bash
-    cd sandbox
-    docker build -t stegosim-sandbox:latest .
-    cd ..
-    ```
+### Build the Execution Image
 
-3.  **Install Dependencies:**
-    ```bash
-    # Frontend
-    cd frontend && pnpm install
-    # Backend
-    cd ../backend && pnpm install
-    ```
+```bash
+cd sandbox
+docker build -t ghostshell-runtime:latest .
+cd ..
+```
 
-4.  **Run it:**
-    - Start Backend: `cd backend && pnpm start` (Runs on port 3000)
-    - Start Frontend: `cd frontend && pnpm dev` (Runs on port 5173)
-    - Open `http://localhost:5173` in your browser.
+### Install Dependencies
+
+```bash
+# Frontend
+cd frontend && pnpm install
+
+# Backend
+cd ../backend && pnpm install
+```
+
+### Run the Platform
+
+```bash
+# Backend (port 3000)
+cd backend && pnpm start
+
+# Frontend (port 5173)
+cd frontend && pnpm dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) to enter the environment.
 
 ---
 
-## ⚠️ Security Note
-This project is designed to execute arbitrary commands. While it uses Docker for isolation, **DO NOT** deploy this to a public server without proper resource limits, network hardening, and a rigorous security audit.
+## ⚠️ Security Warning
+
+This platform intentionally executes user-supplied commands inside controlled environments.
+
+Do not deploy publicly without:
+
+* Strict resource limits
+* Disabled outbound networking
+* Proper isolation hardening
+* A full security audit
+
+GhostShell is a research and learning platform, not a hardened production service.
 
 ---
 
 ## 📜 License
+
 MIT
+
+```
