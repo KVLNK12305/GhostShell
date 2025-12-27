@@ -1,109 +1,178 @@
 # 🧪 GhostShell  
-### A Deceptive Command Execution Environment
+### A Deceptive Command Execution & Interaction Lab
 
-GhostShell is an interactive command-line platform designed to observe, classify, and respond to user behavior inside a synthetic execution environment.
+GhostShell is an interactive, web-based platform designed to explore how humans interact with systems that **execute commands, encode meaning, and present information that may not be entirely truthful**.
 
-It presents itself as a harmless learning sandbox — but beneath the surface, it functions as a high-interaction deception engine that studies misuse, escalation attempts, and adversarial intent in real time.
+It combines a real terminal environment with controlled deception, symbolic encoding, and interpretive challenges to study **trust, intent, and assumption-making** in technical interfaces.
+
+GhostShell is not a traditional CTF, not a pure sandbox, and not a single-purpose tool.  
+It is a **multi-module interaction lab** where behavior matters more than outcomes.
 
 ---
 
 ## 🧠 Core Idea
 
-> What if a terminal didn’t tell the truth — but stayed believable?
+> What if interfaces didn’t always tell the truth — but stayed believable?
 
-GhostShell allows users to execute real commands inside disposable environments while the system:
-- Intercepts every command
-- Classifies intent (benign, exploratory, malicious)
-- Selectively alters reality
-- Feeds consistent but fabricated system responses
-- Logs behavior for later analysis
+GhostShell allows users to interact with realistic systems while the platform:
+- Observes how users explore and probe
+- Alters or abstracts representations of data
+- Introduces ambiguity, encoding, and deception
+- Encourages reasoning over rote tool usage
 
-The interaction itself becomes the signal.
+The focus is not “getting the right answer”, but understanding **how users think** when certainty is removed.
 
 ---
 
 ## 🎭 Dual Reality Model
 
-### 👤 What the Participant Sees
-- A real web-based terminal
-- Familiar Linux tooling
-- File systems that appear consistent
-- Tasks framed as technical exercises
+### 👤 What the User Sees
+- A clean web interface
+- A real terminal
+- Familiar commands and tools
+- Clearly scoped learning modules
 
-### 🍯 What the System Is Doing
-- Monitoring behavioral patterns
-- Detecting enumeration and escalation
-- Simulating privileged resources
-- Maintaining long-term deception
-- Studying reactions when reality bends
+### 🧠 What the System Does
+- Intercepts and evaluates interactions
+- Controls how information is revealed
+- Introduces believable inconsistencies
+- Logs behavioral patterns and decisions
+
+At no point is the user explicitly told whether the system is being fully honest.
 
 ---
 
-## 🚀 Features
+## 🧩 Modules
 
-### 🖥️ Interactive Execution Layer
+GhostShell is composed of independent but thematically linked modules.  
+Each module explores a different layer of interaction, interpretation, or trust.
+
+---
+
+### 🖥️ 1. Terminal Foundations
+
+A guided introduction to basic command-line interaction.
+
+**Focus**
+- Core shell commands
+- File navigation
+- Output interpretation
+
+**Purpose**
+- Establishes a shared baseline
+- Ensures users are comfortable with terminal semantics
+- Serves as the entry point to later deception
+
+This module is intentionally straightforward — the “truthful” baseline.
+
+---
+
+### 🧩 2. Emoji Encoder
+
+A symbolic text encoder implemented as a dedicated React component.
+
+**What It Does**
+- Converts plain text into emoji-based representations
+- Decodes emoji sequences back into text
+- Supports deterministic, reversible mappings
+
+**What It Explores**
+- Meaning through symbols
+- Human pattern recognition
+- The illusion of harmless or playful data
+
+This module is not steganography — it is **semantic encoding**.  
+Nothing is hidden in bits; meaning is hidden in interpretation.
+
+---
+
+### 🖼️ 3. Hidden Data Principles
+
+A minimal, modern take on classic data-hiding ideas.
+
+**Tools Included**
+- `binwalk`
+- `exiftool`
+- `strings`
+- `zsteg`
+
+**Focus**
+- Appended data
+- Metadata leakage
+- Least-significant-bit concepts (at a high level)
+
+Steganography here is treated as **one historical example** of concealed meaning — not the platform’s identity.
+
+---
+
+### 🪞 4. Reality Check (Out-of-the-Box Module)
+
+A module focused entirely on **trusting output**.
+
+**Concept**
+Users execute simple commands and receive output that may be:
+- Accurate
+- Slightly altered
+- Selectively incomplete
+- Entirely fabricated but plausible
+
+No warning is given.
+
+**What It Explores**
+- Over-trust in interfaces
+- Assumption-based reasoning
+- Verification habits vs intuition
+- How small inconsistencies are ignored
+
+This module represents GhostShell’s core philosophy most directly.
+
+---
+
+## 🛠️ Execution Environment
+
+### Interactive Terminal
 - Browser-based terminal powered by Xterm.js
-- Commands executed inside ephemeral Docker-based reality instances
-- Output streamed live over WebSockets
+- Real-time input and output
+- Familiar Linux command behavior
 
-### 🧠 Deception Engine
-- All commands intercepted before execution
-- Intent classification via pattern analysis
-- Adaptive response system:
-  - Real output for benign usage
-  - Simulated output for suspicious actions
-  - Fabricated system artifacts when probing occurs
+### Controlled Execution
+- Commands executed inside disposable Docker containers
+- Session-scoped environments
+- No persistence between runs
 
-### 🍯 High-Interaction Behavior Capture
-- Fake but believable system targets (users, files, configs)
-- Persistent illusion per session
-- Escalation attempts logged silently
-- Automatic reality collapse after repeated malicious probing
-
-### 🧪 Narrative-Based Entry Points
-- Tasks presented as technical challenges
-- Narratives exist to invite interaction, not define the platform
-- The system measures how users explore, not what they solve
+### Command Mediation
+- All commands intercepted server-side
+- Routed to:
+  - Real execution
+  - Simulated output
+  - Controlled failure responses
 
 ---
 
-## 🛠️ Tooling Inside the Environment
+## 🏗️ High-Level Architecture
 
-The execution environment includes real, industry-standard utilities to ensure realism:
+1. User interacts with a module (terminal or UI component)
+2. Input is sent to the backend via WebSocket
+3. The GhostShell engine evaluates intent and context
+4. A response path is chosen:
+   - Real execution
+   - Symbolic transformation
+   - Deceptive but consistent output
+5. Output is returned to the frontend
+6. Interaction metadata is logged
 
-- binwalk — binary structure inspection
-- exiftool — metadata analysis
-- strings — ASCII extraction
-- zsteg — bit-level image analysis
-
-These tools are means, not the focus.
-
----
-
-## 🏗️ Architecture Overview
-
-1. A participant enters a command via the web terminal
-2. The backend Deception Engine receives it via WebSocket
-3. The command is analyzed for intent
-4. One of three paths occurs:
-   - Direct execution inside a disposable container
-   - Simulated execution with fabricated output
-   - Deceptive engagement using fake system artifacts
-5. Output is returned to the participant
-6. Session behavior is logged for analysis
-
-At no point is the participant informed which reality they are interacting with.
+The user is never explicitly told which path was taken.
 
 ---
 
-## 🧬 Design Philosophy
+## 🧬 Design Principles
 
-- Believability over restriction
-- Observation over prevention
-- Deception over denial
-- Behavior over outcomes
+- Believability over restriction  
+- Observation over prevention  
+- Interpretation over instruction  
+- Behavior over correctness  
 
-GhostShell is not designed to block attackers — it is designed to understand them.
+GhostShell is designed to provoke thought, not enforce rules.
 
 ---
 
@@ -112,16 +181,15 @@ GhostShell is not designed to block attackers — it is designed to understand t
 ### Prerequisites
 - Node.js v18+
 - pnpm
-- Docker (must be running)
+- Docker (running)
 
-### Installation
-
+### Clone the Repository
 ```bash
 git clone https://github.com/KVLNK12305/StegoSim.git
 cd StegoSim
 ````
 
-### Build the Execution Image
+### Build the Runtime Image
 
 ```bash
 cd sandbox
@@ -149,27 +217,25 @@ cd backend && pnpm start
 cd frontend && pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to enter the environment.
+Open `http://localhost:5173` in your browser.
 
 ---
 
-## ⚠️ Security Warning
+## ⚠️ Security Notice
 
-This platform intentionally executes user-supplied commands inside controlled environments.
+GhostShell intentionally executes user-supplied commands in controlled environments.
 
-Do not deploy publicly without:
+Before any public deployment:
 
-* Strict resource limits
-* Disabled outbound networking
-* Proper isolation hardening
-* A full security audit
+* Enforce strict resource limits
+* Disable outbound networking
+* Harden container isolation
+* Perform a full security audit
 
-GhostShell is a research and learning platform, not a hardened production service.
+This project is intended for **learning, experimentation, and research**, not production use.
 
 ---
 
 ## 📜 License
 
 MIT
-
-```
