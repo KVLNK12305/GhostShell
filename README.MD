@@ -1,9 +1,3 @@
-Here it is **clean, ready-to-drop, pure Markdown**.
-No prose outside the file — just copy this into `README.md`.
-
----
-
-````md
 # 🧪 GhostShell  
 ### A Deceptive Command Execution Environment
 
