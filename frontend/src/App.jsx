@@ -2,7 +2,7 @@ import { useState } from 'react';
 import TerminalTab from './components/TerminalTab';
 import Sidebar from './components/Sidebar';
 import Trap from './components/Trap';
-import GrimoireBot from './components/GrimoireBot'; 
+import GrimoireBot from './components/GrimoireBot';
 import StegoEncoder from './components/StegoEncode'; // <--- 1. Import the Tool
 import { Plus, X, Monitor, Skull, Eye } from 'lucide-react'; // Added 'Eye' icon
 
@@ -19,7 +19,7 @@ function App() {
     const newId = Date.now().toString();
     let title = `Session ${tabs.length + 1}`;
     
-    if (toolType === 'stego') title = 'StegoSim v1.0';
+    if (toolType === 'stego') title = 'GhostShell v1.0';
 
     setTabs([...tabs, { id: newId, title, type: toolType }]);
     setActiveTabId(newId);
