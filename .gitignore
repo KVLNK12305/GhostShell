@@ -1,102 +1,126 @@
-# ==========================
-# Node / React
-# ==========================
+# ==================================================
+# Dependencies
+# ==================================================
 
-# Node modules
 node_modules/
-frontend/node_modules/
-backend/node_modules/
-# PNPM
-/.pnp
+**/node_modules/
+
+.pnp/
 .pnp.js
 
-# Build output
-/dist
-/build
-/.next
-/out
 
+# ==================================================
+# Build Outputs
+# ==================================================
+
+dist/
+build/
+out/
+.next/
+target/
+bin/
+obj/
+
+**/dist/
+**/build/
+**/out/
+**/target/
+
+
+# ==================================================
+# Rust
+# ==================================================
+
+# Cargo artifacts
+target/
+
+# Uncomment ONLY if library crate
+# Cargo.lock
+
+# Rust temp / metadata
+**/*.rs.bk
+**/*.rmeta
+rust-project.json
+
+
+# ==================================================
+# Go
+# ==================================================
+
+bin/
+obj/
+vendor/
+
+*.test
+
+
+# ==================================================
 # Logs
+# ==================================================
+
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Environment variables
+
+# ==================================================
+# Environment Variables
+# ==================================================
+
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
 
-# Cache
-/.cache
-/.parcel-cache
-/.turbo
 
-# Storybook
-/storybook-static
+# ==================================================
+# Cache / Tooling
+# ==================================================
 
-# Misc
+.cache/
+.parcel-cache/
+.turbo/
+storybook-static/
+
+coverage/
+*.prof
+*.profraw
+*.profdata
+
+
+# ==================================================
+# TypeScript
+# ==================================================
+
 *.tsbuildinfo
-*.log
 
-# ==========================
-# Rust
-# ==========================
 
-# Cargo build outputs
-/target
+# ==================================================
+# Editor / IDE
+# ==================================================
 
-# Rust debug files
-**/*.rs.bk
-
-# Rust environment variables
-.env
-
-# ==========================
-# Go
-# ==========================
-
-# Go build outputs
-/bin/
-/obj/
-/out/
-
-# Executables
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-
-# Test binary
-*.test
-
-# Vendor folder
-/vendor/
-
-# ==========================
-# Editor & OS
-# ==========================
-
-# VSCode
 .vscode/
-
-# JetBrains
 .idea/
 
-# Sublime
 *.sublime-project
 *.sublime-workspace
 
-# OS files
+
+# ==================================================
+# OS Files
+# ==================================================
+
 .DS_Store
 Thumbs.db
 
-# ==========================
-# Testing / Coverage
-# ==========================
-coverage/
-*.prof
-*.tgz
+
+# ==================================================
+# Temporary Files
+# ==================================================
+
+tmp/
+temp/
+*.swp
+*.swo
+*.tmp
