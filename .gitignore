@@ -1,0 +1,19 @@
+# Rust build outputs
+/target/
+/project-ghost/target/
+
+# App local state
+/project-ghost/.ghost_notes.json
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS/editor files
+.DS_Store
+.vscode/*
+!.vscode/settings.json
