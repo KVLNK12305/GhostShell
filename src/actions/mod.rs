@@ -14,11 +14,6 @@ mod neutralize;
 use anyhow::Result;
 use crate::perception::Threat;
 use crate::perception::ThreatSeverity;
-use crate::actions::probe::ProbeEngine;
-use crate::actions::counter::CounterEngine;
-use crate::actions::deceive::DeceiveEngine;
-use crate::actions::neutralize::NeutralizeEngine;
-
 pub use probe::ProbeEngine;
 pub use counter::CounterEngine;
 pub use deceive::DeceiveEngine;
@@ -128,7 +123,7 @@ impl ActionEngine {
                 // Ghost just watches and logs
                 tracing::debug!("Observing threat: {}", threat.description);
                 ActionResult {
-                    action,
+                    action: action.clone(),
                     success: true,
                     message: format!("Observed threat: {}", threat.description),
                     timestamp: chrono::Utc::now(),
@@ -138,7 +133,7 @@ impl ActionEngine {
             Action::Report(threat) => {
                 // Ghost reports intelligence
                 ActionResult {
-                    action,
+                    action: action.clone(),
                     success: true,
                     message: format!("Reported threat: {}", threat.id),
                     timestamp: chrono::Utc::now(),

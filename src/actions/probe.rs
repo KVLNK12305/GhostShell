@@ -183,7 +183,7 @@ impl ProbeEngine {
 
     /// Read service banner
     async fn read_banner(&self, addr: SocketAddr) -> Result<String> {
-        let mut stream = TcpStream::connect(addr).await?;
+        let stream = TcpStream::connect(addr).await?;
         let mut buffer = vec![0u8; 1024];
         let n = stream.try_read(&mut buffer)?;
         Ok(String::from_utf8_lossy(&buffer[..n]).to_string())

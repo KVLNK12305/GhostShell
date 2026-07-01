@@ -13,7 +13,7 @@ use crate::perception::ThreatSeverity;
 use crate::actions::ActionResult;
 
 /// Neutralization methods
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NeutralizationMethod {
     /// Terminate threat actor
     Terminate,

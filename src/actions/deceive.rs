@@ -7,13 +7,12 @@
 //! - Psychological operations
 
 use anyhow::Result;
-use std::collections::HashMap;
 use std::time::{Duration, Instant};
-use crate::perception::Threat;
+use crate::perception::{Threat, ThreatSeverity};
 use crate::actions::ActionResult;
 
 /// Deception campaign types
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DeceptionType {
     /// Deploy honeypot servers
     Honeypot,

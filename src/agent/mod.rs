@@ -50,11 +50,9 @@ impl GhostAgent {
             // Scan for threats
             let threats = self.perception.scan().await?;
             
-            // Process each threat
-            for threat in threats {
-                let action = self.actions.evaluate(&threat).await;
-                let result = self.actions.execute(action).await?;
-                
+            // Process threats
+            let actions = self.actions.evaluate(&threats).await?;
+            for result in self.actions.execute_all(actions).await? {
                 if self.stealth_enabled {
                     // Clean up traces
                     self.stealth.clean_logs()?;

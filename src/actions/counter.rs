@@ -88,7 +88,7 @@ impl CounterEngine {
     async fn engage_threat(&self, threat: &Threat) -> ActionResult {
         tracing::warn!("Engaging threat actor: {}", threat.id);
         
-        let mut evidence = vec![
+        let evidence = vec![
             format!("Engaged threat actor: {}", threat.id),
             format!("Threat description: {}", threat.description),
         ];
