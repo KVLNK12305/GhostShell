@@ -1,19 +1,40 @@
-# Rust build outputs
+# Rust
 /target/
-/project-ghost/target/
+/Cargo.lock
+**/*.rs.bk
 
-# App local state
-/project-ghost/.ghost_notes.json
+# IDE
+/.idea/
+/.vscode/
+*.swp
+*.swo
 
-# Environment files
-.env
-.env.*
-!.env.example
+# OS
+.DS_Store
+Thumbs.db
 
-# Logs
+# Ghost data
+.ghost_notes.json
+.ghost/
+logs/
 *.log
 
-# OS/editor files
-.DS_Store
-.vscode/*
-!.vscode/settings.json
+# Config (if sensitive)
+config/local.yaml
+*.key
+*.pem
+
+# Build
+*.prof
+*.gcda
+*.gcno
+*.gcov
+
+# Debug
+debug/
+*.debug
+
+
+# Added by cargo
+
+/target
