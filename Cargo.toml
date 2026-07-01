@@ -8,6 +8,14 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/KVLNK12305/GhostShell"
 readme = "README.md"
 
+[lib]
+name = "ghostshell"
+path = "src/lib.rs"
+
+[[test]]
+name = "integration_test"
+path = "tests/integration.rs"
+
 [dependencies]
 # Async Runtime
 tokio = { version = "1.35", features = ["full"] }
@@ -32,7 +40,7 @@ zeroize = { version = "1.6", features = ["zeroize_derive"] }
 
 # Logging
 tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "time", "chrono"] }
 
 # CLI
 clap = { version = "4.4", features = ["derive", "env"] }

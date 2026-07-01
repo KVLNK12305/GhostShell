@@ -18,6 +18,8 @@ Thumbs.db
 .ghost/
 logs/
 *.log
+messages/
+reports/
 
 # Config (if sensitive)
 config/local.yaml
