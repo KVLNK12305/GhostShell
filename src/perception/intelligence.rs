@@ -254,7 +254,7 @@ impl ThreatIntelligence {
     fn check_attack_patterns(
         &self,
         sockets: &[SocketRecord],
-        processes: &[ProcessInfo],
+        _processes: &[ProcessInfo],
         auth: &[AuthEvent],
     ) -> Vec<Threat> {
         let mut threats = Vec::new();

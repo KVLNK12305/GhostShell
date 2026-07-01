@@ -7,20 +7,16 @@
 //! - Anomaly detection
 //! - Threat intelligence
 
-mod network;
-mod system;
-mod auth;
-mod anomaly;
-mod intelligence;
+pub mod network;
+pub mod system;
+pub mod auth;
+pub mod anomaly;
+pub mod intelligence;
 
 use anyhow::Result;
 use std::collections::VecDeque;
 use chrono::{DateTime, Utc};
-use crate::perception::network::NetworkMonitor;
-use crate::perception::system::SystemMonitor;
-use crate::perception::auth::AuthMonitor;
-use crate::perception::anomaly::AnomalyDetector;
-use crate::perception::intelligence::ThreatIntelligence;
+use serde::{Serialize, Deserialize};
 
 pub use network::NetworkMonitor;
 pub use system::SystemMonitor;
@@ -29,7 +25,7 @@ pub use anomaly::AnomalyDetector;
 pub use intelligence::ThreatIntelligence;
 
 /// Threat detected by Ghost
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Threat {
     pub id: String,
     pub severity: ThreatSeverity,
@@ -40,7 +36,7 @@ pub struct Threat {
     pub confidence: f64,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub enum ThreatSeverity {
     Critical = 4,
     High = 3,
@@ -61,14 +57,14 @@ impl std::fmt::Display for ThreatSeverity {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Evidence {
     pub kind: EvidenceKind,
     pub data: String,
     pub timestamp: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum EvidenceKind {
     SocketConnection,
     Process,
@@ -154,8 +150,8 @@ impl PerceptionEngine {
         &self,
         anomaly: anomaly::Anomaly,
         sockets: &[network::SocketRecord],
-        processes: &[system::ProcessInfo],
-        auth_events: &[auth::AuthEvent],
+        _processes: &[system::ProcessInfo],
+        _auth_events: &[auth::AuthEvent],
     ) -> Option<Threat> {
         let severity = match anomaly.severity {
             anomaly::Severity::Critical => ThreatSeverity::Critical,

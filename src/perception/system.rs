@@ -55,10 +55,11 @@ impl SystemMonitor {
         let mut processes = Vec::new();
 
         for (pid, process) in self.system.processes() {
+            let pid_u32 = usize::from(*pid) as u32;
             let info = ProcessInfo {
-                pid: *pid,
+                pid: pid_u32,
                 name: process.name().to_string(),
-                parent_pid: process.parent(),
+                parent_pid: process.parent().map(|p| usize::from(p) as u32),
                 parent_name: process.parent().and_then(|p| {
                     self.system.process(p).map(|pp| pp.name().to_string())
                 }),
@@ -66,13 +67,13 @@ impl SystemMonitor {
                 memory_usage: process.memory(),
                 command_line: process.cmd().join(" "),
                 executable_path: process.exe().to_string_lossy().to_string(),
-                user: self.get_process_user(*pid),
+                user: self.get_process_user(pid_u32),
             };
             
             processes.push(info.clone());
             
             // Store in history
-            self.process_history.insert(*pid, info);
+            self.process_history.insert(pid_u32, info);
             
             // Trim history
             if self.process_history.len() > self.max_history {

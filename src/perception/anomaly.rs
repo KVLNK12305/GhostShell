@@ -85,6 +85,7 @@ impl AnomalyDetector {
             }
         }
 
+        detector.update_context();
         detector
     }
 
@@ -241,7 +242,7 @@ impl AnomalyDetector {
                 if let Some(parent) = &process.parent_name {
                     if parent.contains("explorer") || parent.contains("svchost") {
                         anomalies.push(Anomaly {
-                            severity: Severity::High,
+                            severity: Severity::Critical,
                             text: format!("Suspicious process: {} (PID: {}) from {}", 
                                 process.name, process.pid, parent),
                             timestamp: chrono::Utc::now(),
@@ -295,6 +296,16 @@ impl AnomalyDetector {
                 });
             }
 
+            // Check for known malicious tools / miners
+            let name_lower = process.name.to_lowercase();
+            if name_lower.contains("xmrig") || name_lower.contains("netcat") || name_lower == "nc" || name_lower.contains("nmap") || name_lower.contains("mimikatz") {
+                anomalies.push(Anomaly {
+                    severity: Severity::Critical,
+                    text: format!("Suspicious tool/miner process detected: {} (PID: {})", process.name, process.pid),
+                    timestamp: chrono::Utc::now(),
+                });
+            }
+
             // Check for root/administrator processes
             if process.user == "root" || process.user == "Administrator" {
                 if process.name.contains("http") || process.name.contains("ssh") {
@@ -342,5 +353,17 @@ impl AnomalyDetector {
     /// Get active contexts
     pub fn get_active_contexts(&self) -> &HashSet<String> {
         &self.active_contexts
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_anomaly_detector_init() {
+        let detector = AnomalyDetector::new();
+        assert!(detector.get_tracked_ports().contains(&22));
+        assert!(detector.get_tracked_ports().contains(&8080));
     }
 }

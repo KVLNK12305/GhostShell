@@ -10,7 +10,6 @@ use anyhow::Result;
 use std::collections::VecDeque;
 use std::time::Duration;
 use tokio::process::Command;
-use tokio::time::timeout;
 
 /// Socket connection record
 #[derive(Debug, Clone)]
