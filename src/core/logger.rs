@@ -7,8 +7,6 @@
 //! - Log rotation
 //! - JSON formatting
 
-use std::fs::OpenOptions;
-use std::io::Write;
 use tracing::{debug, error, info, trace, warn, Level};
 use tracing_subscriber::{
     fmt::{self, time::UtcTime},

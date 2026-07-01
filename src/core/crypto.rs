@@ -9,12 +9,12 @@
 //! - Message authentication
 
 use anyhow::Result;
-use ring::aead::{AES_256_GCM, Nonce, SealingKey, OpeningKey, UnboundKey};
+use ring::aead::{AES_256_GCM, Nonce, LessSafeKey, UnboundKey, Aad};
 use ring::digest::{digest, SHA256, SHA512};
 use ring::hmac;
 use ring::pbkdf2;
 use ring::rand::{SecureRandom, SystemRandom};
-use ring::signature::{Ed25519KeyPair, KeyPair};
+use ring::signature::Ed25519KeyPair;
 use std::num::NonZeroU32;
 
 /// Cryptographic engine
@@ -52,7 +52,7 @@ impl CryptoEngine {
     /// Generate a random key
     pub fn generate_key(&self) -> Result<[u8; 32]> {
         let mut key = [0u8; 32];
-        self.rng.fill(&mut key)?;
+        self.rng.fill(&mut key).map_err(|_| anyhow::anyhow!("RNG error"))?;
         Ok(key)
     }
 
@@ -66,21 +66,22 @@ impl CryptoEngine {
         let key = self.key.ok_or_else(|| anyhow::anyhow!("No encryption key set"))?;
         
         // Generate a random nonce
-        let mut nonce = [0u8; 12];
-        self.rng.fill(&mut nonce)?;
+        let mut nonce_bytes = [0u8; 12];
+        self.rng.fill(&mut nonce_bytes).map_err(|_| anyhow::anyhow!("RNG error"))?;
 
-        // Create sealing key
-        let unbound_key = UnboundKey::new(&AES_256_GCM, &key)?;
-        let sealing_key = SealingKey::new(unbound_key);
+        // Create less safe key
+        let unbound_key = UnboundKey::new(&AES_256_GCM, &key).map_err(|_| anyhow::anyhow!("Key error"))?;
+        let less_safe_key = LessSafeKey::new(unbound_key);
 
         // Encrypt
         let mut in_out = data.to_vec();
-        let nonce = Nonce::assume_unique_for_key(nonce);
-        sealing_key.seal_in_place_separate_nonce(nonce, &[], &mut in_out)?;
+        let nonce = Nonce::assume_unique_for_key(nonce_bytes);
+        less_safe_key.seal_in_place_append_tag(nonce, Aad::empty(), &mut in_out)
+            .map_err(|_| anyhow::anyhow!("Encryption error"))?;
 
         Ok(EncryptedData {
             ciphertext: in_out,
-            nonce: nonce.as_ref().try_into()?,
+            nonce: nonce_bytes,
         })
     }
 
@@ -88,14 +89,15 @@ impl CryptoEngine {
     pub fn decrypt(&self, encrypted: &EncryptedData) -> Result<Vec<u8>> {
         let key = self.key.ok_or_else(|| anyhow::anyhow!("No encryption key set"))?;
 
-        // Create opening key
-        let unbound_key = UnboundKey::new(&AES_256_GCM, &key)?;
-        let opening_key = OpeningKey::new(unbound_key);
+        // Create less safe key
+        let unbound_key = UnboundKey::new(&AES_256_GCM, &key).map_err(|_| anyhow::anyhow!("Key error"))?;
+        let less_safe_key = LessSafeKey::new(unbound_key);
 
         // Decrypt
         let mut ciphertext = encrypted.ciphertext.clone();
         let nonce = Nonce::assume_unique_for_key(encrypted.nonce);
-        let plaintext = opening_key.open_in_place(nonce, &[], &mut ciphertext)?;
+        let plaintext = less_safe_key.open_in_place(nonce, Aad::empty(), &mut ciphertext)
+            .map_err(|_| anyhow::anyhow!("Decryption error"))?;
 
         Ok(plaintext.to_vec())
     }
@@ -163,13 +165,13 @@ impl CryptoEngine {
     /// Generate Ed25519 key pair
     pub fn generate_ed25519_keypair(&self) -> Result<Vec<u8>> {
         let rng = ring::rand::SystemRandom::new();
-        let pkcs8_bytes = Ed25519KeyPair::generate_pkcs8(&rng)?;
+        let pkcs8_bytes = Ed25519KeyPair::generate_pkcs8(&rng).map_err(|_| anyhow::anyhow!("Keygen error"))?;
         Ok(pkcs8_bytes.as_ref().to_vec())
     }
 
     /// Sign data with Ed25519
     pub fn sign_ed25519(&self, keypair: &[u8], data: &[u8]) -> Result<Vec<u8>> {
-        let keypair = Ed25519KeyPair::from_pkcs8(keypair)?;
+        let keypair = Ed25519KeyPair::from_pkcs8(keypair).map_err(|_| anyhow::anyhow!("Invalid keypair"))?;
         let signature = keypair.sign(data);
         Ok(signature.as_ref().to_vec())
     }
@@ -185,7 +187,7 @@ impl CryptoEngine {
     /// Generate secure random bytes
     pub fn random_bytes(&self, len: usize) -> Result<Vec<u8>> {
         let mut bytes = vec![0u8; len];
-        self.rng.fill(&mut bytes)?;
+        self.rng.fill(&mut bytes).map_err(|_| anyhow::anyhow!("RNG error"))?;
         Ok(bytes)
     }
 
@@ -201,7 +203,7 @@ impl CryptoEngine {
     /// Generate UUID v4
     pub fn generate_uuid(&self) -> Result<String> {
         let mut bytes = [0u8; 16];
-        self.rng.fill(&mut bytes)?;
+        self.rng.fill(&mut bytes).map_err(|_| anyhow::anyhow!("RNG error"))?;
         
         // Set version (4) and variant (RFC 4122)
         bytes[6] = (bytes[6] & 0x0f) | 0x40;
@@ -238,5 +240,53 @@ impl SecureMemory {
             result |= x ^ y;
         }
         result == 0
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_encryption_decryption() {
+        let mut engine = CryptoEngine::new();
+        let key = engine.generate_key().unwrap();
+        engine.set_key(key);
+
+        let data = b"GhostShell Top Secret Message";
+        let encrypted = engine.encrypt(data).unwrap();
+        let decrypted = engine.decrypt(&encrypted).unwrap();
+
+        assert_eq!(data.to_vec(), decrypted);
+    }
+
+    #[test]
+    fn test_hashing() {
+        let engine = CryptoEngine::new();
+        let hash1 = engine.hash_sha256(b"test data");
+        let hash2 = engine.hash_sha256(b"test data");
+        assert_eq!(hash1, hash2);
+    }
+
+    #[test]
+    fn test_uuid_and_random() {
+        let engine = CryptoEngine::new();
+        let uuid1 = engine.generate_uuid().unwrap();
+        let uuid2 = engine.generate_uuid().unwrap();
+        assert_ne!(uuid1, uuid2);
+        assert_eq!(uuid1.len(), 36);
+
+        let val = engine.random_range(10, 20).unwrap();
+        assert!(val >= 10 && val <= 20);
+    }
+
+    #[test]
+    fn test_secure_memory() {
+        let mut data = vec![1, 2, 3, 4];
+        SecureMemory::zeroize(&mut data);
+        assert_eq!(data, vec![0, 0, 0, 0]);
+
+        assert!(SecureMemory::secure_compare(b"secret", b"secret"));
+        assert!(!SecureMemory::secure_compare(b"secret", b"hacker"));
     }
 }
